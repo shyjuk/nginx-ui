@@ -1,0 +1,16 @@
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="ui {{ category }} message">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+
+{% if error %}
+<div style="width:300px;"  class="ui red message">{{error}}</div>
+{% endif %}
+
+{% if msg %}
+    <div style="width:300px;"  class="ui green message">{{msg}}</div>
+{% endif %}

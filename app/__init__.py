@@ -2,8 +2,8 @@ from flask import Flask
 from config import config
 from flask_moment import Moment
 
-
 moment = Moment()
+
 
 
 def create_app(config_name):

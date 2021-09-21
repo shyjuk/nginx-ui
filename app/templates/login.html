@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+        <title>Login - Nginx UI</title>
+        <link rel="icon" type="image/png" href="{{ url_for('static', filename='nginx.ico') }}" sizes="48x48">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='semantic.min.css') }}">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+        {{ moment.include_moment() }}
+        <script src="{{ url_for('static', filename='semantic.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='custom.min.js') }}"></script>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom.css') }}">
+    </head>
+    <body>
+
+        <div class="ui fixed inverted menu">
+            <!-- Menu -->
+            <div class="ui container">
+
+                <a class="header item" href="/">
+                    <img class="logo" src="{{ url_for('static', filename='nginx.png') }}">
+                    Nginx UI
+                </a>
+            </div>
+        </div>
+
+<div class="ui container" style="margin-top: 60px;">
+
+        <form class="ui form" action="/login" method="POST">
+            <h2 class="form-signin-heading">Login</h2>
+            <div class="field"> <label>Username</label> <input  style="width:200px;" type="text" name="username" placeholder="Username"></div>
+            <div class="field"> <label>Password</label> <input  style="width:200px;" type="password" name="password" placeholder="Password"></div>
+            <input class="ui button"  type="submit" value="Log in">
+            <div style="width:250px;margin-top: 20px;"> {% include 'includes/_messages.html' %} </div>
+        </form>
+        
+   </div>
+    </body>
+</html>

@@ -2,11 +2,23 @@ import datetime
 import io
 import os
 import flask
+from functools import wraps
 
 from app.api import api
 
+# Check if user logged in
+def is_logged_in(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in flask.session:
+            return f(*args, **kwargs)
+        else:
+            flask.flash('Unauthorized, Please login', 'red')
+            return flask.render_template('login.html')
+    return wrap
 
 @api.route('/config/<name>',  methods=['GET'])
+@is_logged_in
 def get_config(name: str):
     """
     Reads the file with the corresponding name that was passed.
@@ -24,8 +36,23 @@ def get_config(name: str):
 
     return flask.render_template('config.html', name=name, file=_file), 200
 
+@api.route('/reload_ng',  methods=['GET'])
+@is_logged_in
+def reload_ng():
+    """
+    Reloads nginx configuration
+
+    :param name: Configuration file name
+    :type name: str
+
+    :return: Rendered HTML document with content of the configuration file.
+    :rtype: str
+    """
+    os.system("sudo /etc/init.d/nginx reload")
+    return flask.make_response({'success': True}), 200
 
 @api.route('/config/<name>', methods=['POST'])
+@is_logged_in
 def post_config(name: str):
     """
     Accepts the customized configuration and saves it in the configuration file with the supplied name.
@@ -46,6 +73,7 @@ def post_config(name: str):
 
 
 @api.route('/domains', methods=['GET'])
+@is_logged_in
 def get_domains():
     """
     Reads all files from the configuration file directory and checks the state of the site configuration.
@@ -84,6 +112,7 @@ def get_domains():
 
 
 @api.route('/domain/<name>', methods=['GET'])
+@is_logged_in
 def get_domain(name: str):
     """
     Takes the name of the domain configuration file and
@@ -117,6 +146,7 @@ def get_domain(name: str):
 
 
 @api.route('/domain/<name>', methods=['POST'])
+@is_logged_in
 def post_domain(name: str):
     """
     Creates the configuration file of the domain.
@@ -142,6 +172,7 @@ def post_domain(name: str):
 
 
 @api.route('/domain/<name>', methods=['DELETE'])
+@is_logged_in
 def delete_domain(name: str):
     """
     Deletes the configuration file of the corresponding domain.
@@ -163,12 +194,17 @@ def delete_domain(name: str):
                 break
 
     if removed:
-        return flask.jsonify({'success': True}), 200
+        if reload_ng():
+           return flask.jsonify({'success': True}), 200
+        else:
+            return flask.jsonify({'success': False}), 400
+
     else:
         return flask.jsonify({'success': False}), 400
 
 
 @api.route('/domain/<name>', methods=['PUT'])
+@is_logged_in
 def put_domain(name: str):
     """
     Updates the configuration file with the corresponding domain name.
@@ -185,13 +221,18 @@ def put_domain(name: str):
 
         if os.path.isfile(os.path.join(config_path, _)):
             if _.startswith(name):
+                domain, state = _.rsplit('.', 1)
                 with io.open(os.path.join(config_path, _), 'w') as f:
                     f.write(content['file'])
+                if state == 'conf':
+                    status = reload_ng()
+                    flask.current_app.logger.info("NGINX Reload status: %s",status)
 
     return flask.make_response({'success': True}), 200
 
 
 @api.route('/domain/<name>/enable', methods=['POST'])
+@is_logged_in
 def enable_domain(name: str):
     """
     Activates the domain in Nginx so that the configuration is applied.
@@ -214,4 +255,12 @@ def enable_domain(name: str):
                 else:
                     os.rename(os.path.join(config_path, _), os.path.join(config_path, _ + '.disabled'))
 
-    return flask.make_response({'success': True}), 200
+    if reload_ng():
+        return flask.make_response({'success': True}), 200
+
+
+@api.route("/logout")
+def logout():
+    """Logout Form"""
+    flask.session.clear()
+    return flask.render_template('login.html')

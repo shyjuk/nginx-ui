@@ -10,10 +10,6 @@
                     <i class="play icon"></i>Apply
                 </button>
 
-                <button class="ui right floated labeled icon button" onclick="remove_domain('{{ name }}')">
-                    <i class="trash icon"></i>Remove
-                </button>
-
                 {% if enabled %}
                 <button class="ui right floated labeled icon button" onclick="enable_domain('{{ name }}', false)">
                     <i class="circle middle aligned outline grey icon"></i>Disable
@@ -23,6 +19,10 @@
                     <i class="circle middle aligned green icon"></i>Enable
                 </button>
                 {% endif %}
+                <button class="ui right floated labeled icon button" onclick="remove_domain('{{ name }}')">
+                    <i class="trash icon"></i>Remove
+                </button>
+                
             </div>
         </div>
     </div>

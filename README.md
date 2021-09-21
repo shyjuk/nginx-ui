@@ -1,8 +1,9 @@
-# nginx ui
+# nginx ui 
+## Updated with Simple authentication and Nginx service reload
 
 ![Docker Image CI](https://github.com/schenkd/nginx-ui/workflows/Docker%20Image%20CI/badge.svg)
 
-![Image of Nginx UI](https://i.ibb.co/XXcfsDp/Bildschirmfoto-2020-06-20-um-18-40-27.png)
+![Image of Nginx UI](https://github.com/shyjuk/nginx-ui/blob/master/app/static/nginx_ui.png)
 
 Table of Contents
 

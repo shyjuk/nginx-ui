@@ -19,6 +19,13 @@ function load_domains() {
     });
 }
 
+function reload_ng() {
+    $.when(fetch_html('api/reload_ng')).then(function() {
+        $('#domain').hide();
+        $('#domain_cards').fadeIn();
+    });
+}
+
 function add_domain() {
     var name = $('#add_domain').val();
     $('#add_domain').val('');
