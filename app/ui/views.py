@@ -5,8 +5,6 @@ import os
 from functools import wraps
 from passlib.hash import sha256_crypt
 
-from flask_debugtoolbar import DebugToolbarExtension
-
 # Check if user logged in
 def is_logged_in(f):
     @wraps(f)
