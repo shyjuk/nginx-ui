@@ -6,7 +6,7 @@
 ![Image of Nginx UI](https://github.com/shyjuk/nginx-ui/blob/master/app/static/nginx_ui.png)
 
 Table of Contents
-
+- [Quick start](#quick-start)
 - [nginx ui](#nginx-ui)
   - [Introduction](#introduction)
   - [Setup](#setup)
@@ -15,6 +15,16 @@ Table of Contents
   - [UI](#ui)
   - [Authentication](#authentication)
 
+
+## Quick start
+
+First, prepare your Linux server[*](#quick-start-note) with a fresh install of Ubuntu LTS or Debian.
+
+Use this one-liner to set up an NGINX UI:
+
+```bash
+wget https://raw.githubusercontent.com/shyjuk/nginx-ui/master/scripts/nguisetup.sh -O nguisetup.sh && sudo sh nguisetup.sh
+```
 
 ## Introduction
 
