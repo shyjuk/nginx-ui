@@ -129,7 +129,7 @@ After=network.target
 User=root
 WorkingDirectory=$NGUI_INSTALL_PATH/nginx-ui/
 #ExecStart=/usr/local/bin/flask run
-ExecStart=/usr/local/bin/uwsgi  --socket 127.0.0.1:5000 --protocol=http -w wsgi:app
+ExecStart=/usr/local/bin/uwsgi  --socket 127.0.0.1:5000 --protocol=http -w wsgi:app --logto /var/log/nginx/nginxui.log
 Restart=on-failure
 
 [Install]
