@@ -78,18 +78,12 @@ file. This can be applied, deleted and enabled/disabled.
 
 ## Authentication
 
-[BasicAuth with nginx](https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/)
+A basic single admin based authentication is enabled. The username and password hash is saved in the config.py file. 
+To create a new password use the mk_passwd.py utility under script directory.
 
-In general, this app does not come with authentication. However, it is easy to setup basic auth to restrict unwanted access.
-Here is how this can be done when using nginx.
-
-### Configure the auth file
-
-1. Verify that `apache2-utils` (Debian, Ubuntu) or `httpd-tools` (RHEL/CentOS/Oracle Linux) is installed
-2. Run the htpasswd utility to create a new user and set a passwort.
-    - Make sure, that the directory exists
-    - Remove the `-c` flag, if you have created a user before, since it creates the inital user/passwort file
-    - `sudo htpasswd -c /etc/apache2/.htpasswd user1`
+```none
+python3 mk_passwd.py <new password>
+```
 
 ### Configure nginx
 

@@ -99,6 +99,7 @@ function remove_domain(name) {
         statusCode: {
             200: function() {
                 load_domains();
+                reload_ng();
             },
             400: function() {
                 alert('Deleting not possible');
