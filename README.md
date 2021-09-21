@@ -14,8 +14,7 @@ Table of Contents
     - [Docker](#docker)
   - [UI](#ui)
   - [Authentication](#authentication)
-    - [Configure the auth file](#configure-the-auth-file)
-    - [Configure nginx](#configure-nginx)
+
 
 ## Introduction
 
@@ -79,33 +78,9 @@ file. This can be applied, deleted and enabled/disabled.
 ## Authentication
 
 A basic single admin based authentication is enabled. The username and password hash is saved in the config.py file. 
-To create a new password use the mk_passwd.py utility under script directory.
+To change the password create a new password using the mk_passwd.py utility under script directory and replace the value of "PASS" variable in config.py.
 
 ```none
 python3 mk_passwd.py <new password>
 ```
 
-### Configure nginx
-
-The following example adds basic auth to our nginxui app running in a docker container with a mapped port 8080.
-In this case, it will be accessible via nginx.mydomain.com
-
-```none
-server {
-    server_name nginx.mydomain.com;
-
-    location / {
-        proxy_pass http://127.0.0.1:8080/;
-    }
-
-    auth_basic "nginxui secured";
-    auth_basic_user_file /etc/apache2/.htpasswd;
-
-    # [...] ommited ssl configuration
-}
-```
-
-1. Add above nginx conf to your `/etc/nginx/my.conf` file
-2. Run `nginx -t` to make sure, that your config is valid
-3. Run `systemctl restart nginx` (or equivalent) to restart your nginx and apply the new settings
-4. Your nginx ui is now accessible at nginx.mydomain.com and will correctly prompt for basic auth
